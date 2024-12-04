@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday</title>
+    <style>
+        body {
+            background-color: #FFC0CB; /* Light pink background */
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+            margin: 0;
+        }
+        .page {
+            display: none;
+            padding: 20px;
+        }
+        .page.active {
+            display: block;
+        }
+        img {
+            max-width: 30%; /* Responsive image width */
+            height: auto;
+            margin: 10px;
+        }
+        button {
+            margin: 20px;
+            padding: 10px 20px;
+            background-color: #f8f9fa;
+            border: 1px solid #ccc;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div id="firstPage" class="page active">
+        <h1>Happy Birthday mi niña!!!</h1>
+        <img src="https://cloudfront-eu-central-1.images.arcpublishing.com/diarioas/6M4LPGIQERGV3DGBUMZZCDJQMY.jpeg" alt="Image 1">
+        <img src="https://github.com/alejoricoe/madre/blob/main/image1.jpeg?raw=true" alt="Image 2">
+        <img src="https://github.com/alejoricoe/madre/blob/main/image3.png?raw=true" alt="Image 3">
+        <img src="https://github.com/alejoricoe/madre/blob/main/image2.jpeg?raw=true" alt="Image 4">
+        <button onclick="showPage('secondPage')">Click Here</button>
+    </div>
+    <div id="secondPage" class="page">
+        <p>Happy birthday to the most cute and smart girl!! I hope you have a wonderful and incredible day. We have pending the celebration for later, I miss you! Thanks for always being fun and support me (and dont get too mad with me XD haha). You are the amazing, and I wish always the best for you mi niña. Hope this new year brings a lot of good moments and experiences. Enjoy your day, eat a lot of sugar (not too much char!), and be super happy! </p>
+        <button onclick="showPage('firstPage')">Click aquí</button>
+    </div>
+    <script>
+        function showPage(pageId) {
+            var pages = document.querySelectorAll('.page');
+            pages.forEach(function(page) {
+                page.classList.remove('active');
+            });
+            document.getElementById(pageId).classList.add('active');
+        }
+    </script>
+</body>
+</html>
