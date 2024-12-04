@@ -6,7 +6,7 @@
     <title>Happy Birthday</title>
     <style>
         body {
-            background-color: #FFC0CB; /* Light pink background */
+            background-color: #FFC0CB;
             font-family: Arial, sans-serif;
             text-align: center;
             padding: 20px;
@@ -20,7 +20,7 @@
             display: block;
         }
         img {
-            max-width: 30%; /* Responsive image width */
+            max-width: 30%;
             height: auto;
             margin: 10px;
         }
@@ -32,11 +32,10 @@
             font-size: 16px;
             cursor: pointer;
         }
-        canvas {
-            background: #fff;
-            display: block;
-            margin: 20px auto;
-            border: 1px solid #000;
+        #countdown {
+            font-size: 24px;
+            color: #000;
+            margin: 20px;
         }
         .gift-container {
             margin: 20px auto;
@@ -44,163 +43,107 @@
         .gift {
             width: 200px;
             cursor: pointer;
-            animation: bounce 2s infinite;
         }
-        @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% {
-                transform: translateY(0);
-            }
-            40% {
-                transform: translateY(-20px);
-            }
-            60% {
-                transform: translateY(-10px);
-            }
+        .intro {
+            opacity: 0;
+            animation: fadeIn 2s forwards;
+        }
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+        @keyframes fall {
+            to { transform: translateY(100vh) rotate(360deg); }
         }
     </style>
 </head>
 <body>
+    <!-- First Page -->
     <div id="firstPage" class="page active">
-        <h1>Happy Birthday mi niña!!!</h1>
-        <img src="https://cloudfront-eu-central-1.images.arcpublishing.com/diarioas/6M4LPGIQERGV3DGBUMZZCDJQMY.jpeg" alt="Image 1">
-        <img src="https://github.com/alejoricoe/madre/blob/main/image1.jpeg?raw=true" alt="Image 2">
-        <img src="https://github.com/alejoricoe/madre/blob/main/image3.png?raw=true" alt="Image 3">
-        <img src="https://github.com/alejoricoe/madre/blob/main/image2.jpeg?raw=true" alt="Image 4">
+        <div class="intro">
+            <h1>Happy Birthday, mi niña!!! 🎉</h1>
+        </div>
+        <audio controls autoplay loop>
+            <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mp3">
+            Your browser does not support the audio element.
+        </audio>
+        <img src="https://github.com/alejoricoe/madre/blob/main/image1.jpeg?raw=true" alt="Image 1">
+        <img src="https://github.com/alejoricoe/madre/blob/main/image2.jpeg?raw=true" alt="Image 2">
+        <div id="countdown"></div>
         <div class="gift-container">
-            <img class="gift" src="https://upload.wikimedia.org/wikipedia/commons/3/3e/Giftbox_icon.png" alt="Gift" onclick="unwrapGift()">
+            <img class="gift" src="https://upload.wikimedia.org/wikipedia/commons/3/3e/Giftbox_icon.png" alt="Gift">
         </div>
         <button onclick="showPage('secondPage')">Click Here</button>
     </div>
+
+    <!-- Second Page -->
     <div id="secondPage" class="page">
-        <p>Happy birthday to the most cute and smart girl!! I hope you have a wonderful and incredible day. We have pending the celebration for later, I miss you! Thanks for always being fun and support me (and dont get too mad with me XD haha). You are the amazing, and I wish always the best for you mi niña. Hope this new year brings a lot of good moments and experiences. Enjoy your day, eat a lot of sugar (not too much char!), and be super happy! </p>
-        <canvas id="brickBreakerCanvas" width="400" height="300"></canvas>
+        <p>Happy birthday to the most cute and smart girl!! I hope you have a wonderful and incredible day. We have pending the celebration for later, I miss you! Thanks for always being fun and support me (and don't get too mad with me XD haha). You are amazing, and I wish always the best for you. Enjoy your day, eat a lot of sugar, and be super happy! 😊</p>
+        <p>Enter the secret word:</p>
+        <input type="text" id="secretInput" placeholder="Enter secret word">
+        <button onclick="checkSecret()">Submit</button>
+        <p id="hiddenMessage" style="display: none; color: green;">🎉 Congratulations! Here is your gift card code: ABCD-1234-EFGH 🎉</p>
         <button onclick="showPage('firstPage')">Back</button>
     </div>
+
     <script>
+        // Switch between pages
         function showPage(pageId) {
-            var pages = document.querySelectorAll('.page');
-            pages.forEach(function(page) {
-                page.classList.remove('active');
-            });
+            document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
             document.getElementById(pageId).classList.add('active');
         }
 
-        function unwrapGift() {
-            const gift = document.querySelector('.gift');
-            gift.src = "https://upload.wikimedia.org/wikipedia/commons/4/4f/Heart_corazon.png";
-            gift.style.animation = "none";
-        }
+        // Countdown Timer
+        const targetDate = new Date("2025-02-14T00:00:00").getTime();
+        setInterval(() => {
+            const now = new Date().getTime();
+            const diff = targetDate - now;
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+            document.getElementById("countdown").textContent = `Ski Trip Countdown: ${days}d ${hours}h ${minutes}m ${seconds}s`;
+        }, 1000);
 
-        // Brick Breaker Game
-        let canvas = document.getElementById("brickBreakerCanvas");
-        let ctx = canvas.getContext("2d");
-
-        let ball = { x: canvas.width / 2, y: canvas.height - 30, dx: 2, dy: -2, radius: 10 };
-        let paddle = { width: 75, height: 10, x: (canvas.width - 75) / 2 };
-        let rightPressed = false, leftPressed = false;
-
-        let bricks = [];
-        let rows = 3, cols = 5;
-        for (let c = 0; c < cols; c++) {
-            bricks[c] = [];
-            for (let r = 0; r < rows; r++) {
-                bricks[c][r] = { x: 0, y: 0, status: 1 };
+        // Secret Word Check
+        function checkSecret() {
+            const input = document.getElementById("secretInput").value.toLowerCase();
+            if (input === "happybirthday") {
+                document.getElementById("hiddenMessage").style.display = "block";
+            } else {
+                alert("Wrong secret word! Try again.");
             }
         }
 
-        function drawBall() {
-            ctx.beginPath();
-            ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
-            ctx.fillStyle = "#FF0000";
-            ctx.fill();
-            ctx.closePath();
+        // Confetti Animation
+        function createConfetti() {
+            const confetti = document.createElement("div");
+            confetti.style.position = "fixed";
+            confetti.style.top = `${Math.random() * 100}vh`;
+            confetti.style.left = `${Math.random() * 100}vw`;
+            confetti.style.width = "10px";
+            confetti.style.height = "10px";
+            confetti.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 50%)`;
+            confetti.style.animation = "fall 3s linear infinite";
+            document.body.appendChild(confetti);
+            setTimeout(() => confetti.remove(), 3000);
         }
+        setInterval(createConfetti, 100);
 
-        function drawPaddle() {
-            ctx.beginPath();
-            ctx.rect(paddle.x, canvas.height - paddle.height, paddle.width, paddle.height);
-            ctx.fillStyle = "#0095DD";
-            ctx.fill();
-            ctx.closePath();
+        // Fireworks Animation
+        function createFireworks() {
+            const fireworks = document.createElement("div");
+            fireworks.style.position = "fixed";
+            fireworks.style.width = "10px";
+            fireworks.style.height = "10px";
+            fireworks.style.borderRadius = "50%";
+            fireworks.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 50%)`;
+            fireworks.style.top = `${Math.random() * 100}vh`;
+            fireworks.style.left = `${Math.random() * 100}vw`;
+            fireworks.style.animation = "fall 2s linear infinite";
+            document.body.appendChild(fireworks);
+            setTimeout(() => fireworks.remove(), 2000);
         }
-
-        function drawBricks() {
-            for (let c = 0; c < cols; c++) {
-                for (let r = 0; r < rows; r++) {
-                    if (bricks[c][r].status == 1) {
-                        let brickX = c * (70 + 10) + 30;
-                        let brickY = r * (20 + 10) + 30;
-                        bricks[c][r].x = brickX;
-                        bricks[c][r].y = brickY;
-                        ctx.beginPath();
-                        ctx.rect(brickX, brickY, 70, 20);
-                        ctx.fillStyle = "#0095DD";
-                        ctx.fill();
-                        ctx.closePath();
-                    }
-                }
-            }
-        }
-
-        function collisionDetection() {
-            for (let c = 0; c < cols; c++) {
-                for (let r = 0; r < rows; r++) {
-                    let b = bricks[c][r];
-                    if (b.status == 1) {
-                        if (
-                            ball.x > b.x && ball.x < b.x + 70 &&
-                            ball.y > b.y && ball.y < b.y + 20
-                        ) {
-                            ball.dy = -ball.dy;
-                            b.status = 0;
-                        }
-                    }
-                }
-            }
-        }
-
-        function draw() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            drawBricks();
-            drawBall();
-            drawPaddle();
-            collisionDetection();
-
-            ball.x += ball.dx;
-            ball.y += ball.dy;
-
-            if (ball.x + ball.dx > canvas.width - ball.radius || ball.x + ball.dx < ball.radius) {
-                ball.dx = -ball.dx;
-            }
-            if (ball.y + ball.dy < ball.radius) {
-                ball.dy = -ball.dy;
-            } else if (ball.y + ball.dy > canvas.height - ball.radius) {
-                if (ball.x > paddle.x && ball.x < paddle.x + paddle.width) {
-                    ball.dy = -ball.dy;
-                } else {
-                    document.location.reload();
-                }
-            }
-
-            if (rightPressed && paddle.x < canvas.width - paddle.width) {
-                paddle.x += 7;
-            } else if (leftPressed && paddle.x > 0) {
-                paddle.x -= 7;
-            }
-
-            requestAnimationFrame(draw);
-        }
-
-        document.addEventListener("keydown", function(e) {
-            if (e.key === "Right" || e.key === "ArrowRight") rightPressed = true;
-            else if (e.key === "Left" || e.key === "ArrowLeft") leftPressed = true;
-        });
-        document.addEventListener("keyup", function(e) {
-            if (e.key === "Right" || e.key === "ArrowRight") rightPressed = false;
-            else if (e.key === "Left" || e.key === "ArrowLeft") leftPressed = false;
-        });
-
-        draw();
+        setInterval(createFireworks, 200);
     </script>
 </body>
 </html>
