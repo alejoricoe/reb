@@ -70,7 +70,7 @@
         <img src="https://github.com/alejoricoe/madre/blob/main/image2.jpeg?raw=true" alt="Image 2">
         <div id="countdown"></div>
         <div class="gift-container">
-            <img class="gift" src="https://upload.wikimedia.org/wikipedia/commons/3/3e/Giftbox_icon.png" alt="Gift">
+            <img class="gift" src="https://img.freepik.com/vector-gratis/letras-feliz-cumpleanos-letras-doradas_52683-35047.jpg" alt="Gift">
         </div>
         <button onclick="showPage('secondPage')">Click Here</button>
     </div>
@@ -79,7 +79,7 @@
     <div id="secondPage" class="page">
         <p>Happy birthday to the most cute and smart girl!! I hope you have a wonderful and incredible day. We have pending the celebration for later, I miss you! Thanks for always being fun and support me (and don't get too mad with me XD haha). You are amazing, and I wish always the best for you. Enjoy your day, eat a lot of sugar, and be super happy! 😊</p>
         <p>Enter the secret word:</p>
-        <input type="text" id="secretInput" placeholder="Enter secret word">
+        <input type="text" id="secretInput" placeholder="Favourite Tagalog word (lowercase)">
         <button onclick="checkSecret()">Submit</button>
         <p id="hiddenMessage" style="display: none; color: green;">🎉 Congratulations! Here is your gift card code: ABCD-1234-EFGH 🎉</p>
         <button onclick="showPage('firstPage')">Back</button>
@@ -93,7 +93,7 @@
         }
 
         // Countdown Timer
-        const targetDate = new Date("2025-02-14T00:00:00").getTime();
+        const targetDate = new Date("2025-01-16T00:00:00").getTime();
         setInterval(() => {
             const now = new Date().getTime();
             const diff = targetDate - now;
@@ -107,7 +107,7 @@
         // Secret Word Check
         function checkSecret() {
             const input = document.getElementById("secretInput").value.toLowerCase();
-            if (input === "happybirthday") {
+            if (input === "char") {
                 document.getElementById("hiddenMessage").style.display = "block";
             } else {
                 alert("Wrong secret word! Try again.");
